@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo"></div>
+        <div class="brand-meta">
+          <p class="t">Twenty20 Systems</p>
+          <p class="s">Hiring Assignment • Auth + Portfolio</p>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="seg">
+          <a class="active" href="/portfolio.html">Portfolio</a>
+          <a href="/contact.html">Contact Me</a>
+        </div>
+        <div class="pill">
+          <span class="dot" id="dot"></span> Logged in
+        </div>
+        <button class="btn" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="profile">
+      <div class="avatar"></div>
+      <div class="p-meta">
+        <h2 id="name">Loading...</h2>
+        <div class="email" id="email"></div>
+        <div class="about">
+          Computer Science undergraduate specializing in MERN stack development, skilled in building REST APIs,
+          integrating MongoDB, and creating responsive React interfaces. Strong problem-solving and teamwork
+          abilities with a focus on efficient full-stack delivery.
+        </div>
+      </div>
+    </div>
+    <div class="section-title">Skills</div>
+    <div class="cards">
+      <div class="card">
+        <h3>Frontend</h3>
+        <p>React, HTML, CSS, JavaScript • Responsive UI</p>
+        <div class="chips"><span class="chip">React</span><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JS</span></div>
+      </div>
+      <div class="card">
+        <h3>Backend</h3>
+        <p>Node/Express basics, REST APIs, MongoDB integration • Auth flow</p>
+        <div class="chips"><span class="chip">REST</span><span class="chip">MongoDB</span><span class="chip">JWT</span></div>
+      </div>
+      <div class="card">
+        <h3>Tools</h3>
+        <p>Git/GitHub • CI/CD • Debugging</p>
+        <div class="chips"><span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">CI/CD</span></div>
+      </div>
+    </div>
+    <div class="section-title">Projects</div>
+    <div class="cards">
+      <div class="card">
+        <h3>StayEase</h3>
+        <p>Full-stack app for booking resorts/cafés with hourly booking. Responsive UI + REST APIs + MongoDB.</p>
+        <div class="chips"><span class="chip">Node</span><span class="chip">MongoDB</span><span class="chip">REST</span></div>
+      </div>
+      <div class="card">
+        <h3>Jarvis: AI Virtual Assistant</h3>
+        <p>MERN assistant with speech recognition, Gemini API integration, and voice interaction.</p>
+        <div class="chips"><span class="chip">MERN</span><span class="chip">Gemini</span><span class="chip">Web Speech</span></div>
+      </div>
+      <div class="card">
+        <h3>Crypto Anomaly Detection</h3>
+        <p>ML pipeline with multi-source signals, Isolation Forest + LSTM-AE, explainability with SHAP, live alerts.</p>
+        <div class="chips"><span class="chip">Python</span><span class="chip">LSTM-AE</span><span class="chip">SHAP</span></div>
+      </div>
+    </div>
+  </div>
+  <script src="/app.js"></script>
+  <script>
+    (async () => {
+      const user = await requireAuth();
+      if (!user) return;
+      document.getElementById('name').textContent = user.name || 'User';
+      document.getElementById('email').textContent = user.email || '';
+    })();
+  </script>
+</body>
+</html>
