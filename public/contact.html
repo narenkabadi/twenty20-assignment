@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Me</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="noise"></div>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo"></div>
+        <div class="brand-meta">
+          <p class="t">Twenty20 Systems</p>
+          <p class="s">Hiring Assignment • Auth + Portfolio</p>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <div class="seg">
+          <a href="/portfolio.html">Portfolio</a>
+          <a class="active" href="/contact.html">Contact Me</a>
+        </div>
+        <div class="pill">
+          <span class="dot"></span> Logged in
+        </div>
+        <button class="btn" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="profile" style="margin-bottom:16px;">
+      <div class="p-meta">
+        <h2 style="margin:0;font-size:18px;letter-spacing:-0.2px;">Contact Me</h2>
+        <div class="about" style="max-width:80ch;">
+          Feel free to reach out regarding the Twenty20 Systems assignment.
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="k">Email</div>
+        <div class="v" id="email"></div>
+      </div>
+      <div class="contact-item">
+        <div class="k">Phone</div>
+        <div class="v" id="phone">—</div>
+      </div>
+      <div class="contact-item">
+        <div class="k">GitHub</div>
+        <div class="v"><a class="link" id="github" href="#" target="_blank" rel="noreferrer">—</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="k">LinkedIn</div>
+        <div class="v"><a class="link" id="linkedin" href="#" target="_blank" rel="noreferrer">—</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+  <script>
+    (async () => {
+      const user = await requireAuth();
+      if (!user) return;
+
+      document.getElementById("email").textContent = user.email || "";
+
+      const phone = user.phone || "";
+      const github = user.github || "";
+      const linkedin = user.linkedin || "";
+
+      document.getElementById("phone").textContent = phone || "Not provided";
+
+      const gh = document.getElementById("github");
+      if (github) { gh.href = github; gh.textContent = github; }
+      else { gh.href = "#"; gh.textContent = "Not provided"; }
+
+      const li = document.getElementById("linkedin");
+      if (linkedin) { li.href = linkedin; li.textContent = linkedin; }
+      else { li.href = "#"; li.textContent = "Not provided"; }
+    })();
+  </script>
+</body>
+</html>
