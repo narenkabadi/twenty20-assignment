@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Twenty20 Systems • Landing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="noise"></div>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo"></div>
+        <div class="brand-meta">
+          <p class="t">Twenty20 Systems</p>
+          <p class="s">Hiring Assignment • Auth + Portfolio</p>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div class="pill">
+          <span class="dot"></span> Not logged in
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="grid2">
+      <div class="panel">
+        <div class="kicker">
+          <span style="width:8px;height:8px;border-radius:999px;background:rgba(34,211,238,0.95);box-shadow:0 0 0 6px rgba(34,211,238,0.12)"></span>
+          Clean spacing • Minimal UI • Responsive
+        </div>
+        <h1 class="big"><span class="grad">Twenty20</span> Systems<br/>Assignment</h1>
+        <p class="desc">
+          Register a new user (stored in MongoDB), then login to see your Portfolio and Contact pages.
+        </p>
+        <div class="hero-img">
+          <div class="tag">MongoDB • JWT cookie • Vercel API</div>
+        </div>
+      </div>
+
+      <div class="panel soft">
+        <div class="tabs">
+          <button id="loginTab" class="tab active">Login</button>
+          <button id="registerTab" class="tab">Register</button>
+        </div>
+        <div id="toast" class="toast"></div>
+        <div id="registerFields" style="display:none;">
+          <div class="field">
+            <div class="label">Full Name</div>
+            <input class="input" id="rName" placeholder="Your Name" />
+          </div>
+          <div class="field">
+            <div class="label">Phone (optional)</div>
+            <input class="input" id="rPhone" placeholder="+91..." />
+          </div>
+          <div class="field">
+            <div class="label">GitHub (optional)</div>
+            <input class="input" id="rGithub" placeholder="https://github.com/..." />
+          </div>
+          <div class="field">
+            <div class="label">LinkedIn (optional)</div>
+            <input class="input" id="rLinkedin" placeholder="https://www.linkedin.com/in/..." />
+          </div>
+        </div>
+        <div class="field">
+          <div class="label">Email</div>
+          <input class="input" id="email" placeholder="you@example.com" />
+        </div>
+        <div class="field">
+          <div class="label">Password</div>
+          <input class="input" id="password" type="password" placeholder="Minimum 6 characters" />
+        </div>
+        <button class="cta" id="ctaBtn">Login</button>
+        <p class="hint">This is the exact flow evaluators will test: Register → Login → Portfolio → Logout.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+  <script>
+    const toastEl = document.getElementById('toast');
+    let mode = 'login';
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const reg = document.getElementById('registerFields');
+    const cta = document.getElementById('ctaBtn');
+
+    function setMode(m) {
+      mode = m;
+      loginTab.classList.toggle('active', m === 'login');
+      registerTab.classList.toggle('active', m === 'register');
+      reg.style.display = m === 'register' ? 'block' : 'none';
+      cta.textContent = m === 'register' ? 'Create Account' : 'Login';
+    }
+    loginTab.onclick = () => setMode('login');
+    registerTab.onclick = () => setMode('register');
+
+    cta.onclick = async () => {
+      try {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        if (mode === 'register') {
+          const name = document.getElementById('rName').value.trim();
+          const phone = document.getElementById('rPhone').value.trim();
+          const github = document.getElementById('rGithub').value.trim();
+          const linkedin = document.getElementById('rLinkedin').value.trim();
+          const data = await api('/api/register', 'POST', { name, email, password, phone, github, linkedin });
+          toast(toastEl, data.message, 'success');
+          setMode('login');
+        } else {
+          const data = await api('/api/login', 'POST', { email, password });
+          toast(toastEl, data.message, 'success');
+          setTimeout(() => (window.location.href = '/portfolio.html'), 600);
+        }
+      } catch (e) {
+        toast(toastEl, e.message, 'error');
+      }
+    };
+
+    // If already logged in, redirect to portfolio
+    (async () => {
+      try {
+        await api('/api/me');
+        window.location.href = '/portfolio.html';
+      } catch {}
+    })();
+  </script>
+</body>
+</html>
